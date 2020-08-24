@@ -2741,3 +2741,14 @@ class Bitbucket(AtlassianRestAPI):
             workspace=workspace, repository=repository, user=user)
 
         return self.delete(self.resource_url(resource))
+
+    def get_user_ssh_keys(self, user):
+        """
+        Get all ssh keys for a user.
+        """
+        if not self.cloud:
+            url = 'rest/ssh/1.0/keys?user={username}'.format(username=user)
+        else:
+            url = 'rest/api/2.0/users/{username}/ssh-keys'.format(username=user)
+        return (self.get(url) or {}).get('values')
+
